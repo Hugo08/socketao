@@ -1,0 +1,9 @@
+##if method == 'GET':
+##    arquivo = open('arqv.txt', 'r') #--> Abre somente leitura
+##    arquivo.read() #--> Retorna todo arquivo em uma string
+##    arquivo. readlines() #-->  Retorna todo arquivo em uma lista de strings
+##elif method == 'POST':
+##    arquivo = open('arqv.txt', 'w') #--> Abre para gravacao
+##    arquivo.write('Este texto sera gravado!') #--> Grava texto
+## 
+##arquivo.close() #--> Fecha o arquivo
