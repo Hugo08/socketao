@@ -13,10 +13,23 @@ while True:
             print('Conectado em:', addr)
             while True:
                 data = conn.recv(1024)
-                array = data.split(b"'")
-                print(array)
-                if data == b'':
+                data = data.decode('utf-8')          #Decodificando de bytes para string
+                
+                if data == '':
                     break
-                conn.send(data)
+                
+                array = data.split(' ')
+                method = array[0]
+                source = array[1]
+                conection = array[2]
+                
+                '''with open('index.html','rb') as doc:           #Tentando abrir arquivo e tentar enviar por meio do socket como string
+                    print(doc.read())
+                    data = doc
+                    doc.close()'''
+                
+                #print(array)
+
+                conn.send(data)      #Codificando uma string para bytes
         s.close()
         print('Conexão fechada')
