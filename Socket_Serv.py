@@ -3,20 +3,21 @@ import socket
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost) Só comunica com o próprio host
 PORT = 65432        # Port to listen on (non-privileged ports are > 1023)
 
-def method_GET(arquivo):
+def method_GET(arquivo):   #Método GET
     try:
-        cabecalho = ''
+        cabecalho = 'HTTP/1.1 200 OK\nContent-Type: text/html\n'
         body = open(arquivo).read()                    #Tentando abrir arquivo e tentar enviar por meio do socket como string
-        print('Enviado: ', body.encode('utf-8'))
-        conn.send(body.encode('utf-8'))                #Codificando uma string para bytes
+        response = cabecalho + body
+        print('Enviado: ',repr(response))
+        conn.send(response.encode('utf-8'))                #Codificando uma string para bytes
         
     except:
-        body = 'FILE NOT FOUND 404'
-        print('Enviado ',body.encode('utf-8'))
-        conn.send(body.encode('utf-8'))
+        response = 'HTTP/1.1 404 File Not Found'
+        print('Enviado ',repr(response))
+        conn.send(response.encode('utf-8'))
 
-def method_POST(arquivo):
-    #print('Nada ainda')
+def method_POST(arquivo):    #Método POST
+    print('Nada ainda')
 
 
 while True:
@@ -40,11 +41,22 @@ while True:
                     source = array[1]
                     conection = array[2]
 
-                    if method == 'GET':
-                        method_GET(source)
-                    
-                    if method == 'POST':
-                        method_POST(source)
+                    if conection == 'HTTP/1.1':
+                        if method == 'GET':
+                            method_GET(source)
+                        
+                        elif method == 'POST':
+                            method_POST(source)
+                        
+                        else:
+                            response = 'Método errado'
+                            print('Enviado: ',repr(response))
+                            conn.send(response.encode('utf-8'))
+
+                    else:
+                        response = 'Servidor não suporta HTTP/1.0'
+                        print('Enviado: ',repr(response))
+                        conn.send(response.encode('utf-8'))
 
         finally:
             s.close()
