@@ -15,6 +15,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         data = s.recv(1024)
         data = data.decode('utf-8')                          #Decodificando de bytes para string a resposta
 
+        if data[0] == 'S':
+            mensagem = ''
+            s.send(mensagem.encode('utf-8'))
+            print('Recebido', repr(data))
+            break
+
         print('Recebido', repr(data))
     
     print('Fechando Conexão...')
