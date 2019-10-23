@@ -70,14 +70,12 @@ while True:
                     conection = array[2]
                     body = array[1]
 
-<<<<<<< HEAD
                     if method == 'GET':
                         method_GET(source)
                     
                     if method == 'POST':
                         method_POST(source, body)
-=======
-                    if conection == 'HTTP/1.1':
+                        if conection == 'HTTP/1.1':
                         if method == 'GET':
                             method_GET(source)
                         
@@ -93,7 +91,6 @@ while True:
                         response = 'Servidor não suporta HTTP/1.0'
                         print('Enviado: ',repr(response))
                         conn.send(response.encode('utf-8'))
->>>>>>> 0bc08b2d97520498b039285cec4940bbff972e15
 
         finally:
             s.close()
