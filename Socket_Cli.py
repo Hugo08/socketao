@@ -6,22 +6,29 @@ PORT = 65432        # The port used by the server
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))                                 #Iniciando conexão com HOST E PORT designadas no servidor
     while True:
-        mensagem = input('Digite uma mensagem:' )
-        s.send(mensagem.encode('utf-8'))                     #Enviando mensagem de requisição para servidor, codificada em bytes
-        
-        if mensagem == '':
-            break
+        method = input('Método: ')
+        source = input('Arquivo: ')
+        protocol = input('Protocolo: ')
+        request = method +' '+ source +' '+ protocol
+        s.send(request.encode('utf-8'))                     #Enviando mensagem de requisição para servidor, codificada em bytes
 
-        data = s.recv(1024)
-        data = data.decode('utf-8')                          #Decodificando de bytes para string a resposta
+        response = s.recv(1024)
+        response = response.decode('utf-8')                          #Decodificando de bytes para string a resposta
 
-        if data[0] == 'S':
+        array = response.split(' ')
+
+        if array[1] != '200':
             mensagem = ''
             s.send(mensagem.encode('utf-8'))
-            print('Recebido', repr(data))
+            print('Recebido', repr(response))
             break
 
-        print('Recebido', repr(data))
+        print('Recebido', repr(response))
+
+        exit = input('Deseja encerrar a conexão?(s/n)')
+        if exit == 's':
+            s.send(b'')
+            break
     
     print('Fechando Conexão...')
 

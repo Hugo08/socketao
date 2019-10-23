@@ -3,18 +3,20 @@ import socket
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost) Só comunica com o próprio host
 PORT = 65432        # Port to listen on (non-privileged ports are > 1023)
 
-def method_GET(arquivo):
+def method_GET(source):   #Método GET
     try:
-        cabecalho = 'HTTP/1.1 200 OK\n'
-        body = open(arquivo).read()                    #Tentando abrir arquivo e tentar enviar por meio do socket como string
-        print('Enviado: \n',cabecalho.encode('utf-8'), body.encode('utf-8'))
-        conn.send(cabecalho.encode('utf-8'), body.encode('utf-8'))                #Codificando uma string para bytes
+        cabecalho = 'HTTP/1.1 200 OK\n\n'             #\nContent-Type: text/html; charset=iso-8859-1
+        body = open(source).read()                    #Tentando abrir arquivo e tentar enviar por meio do socket como string
+        response = cabecalho + body + '\n'
+        print('Enviado: ',repr(response))
+        conn.send(response.encode('utf-8'))                #Codificando uma string para bytes
         
     except:
-        cabecalho = 'HTTP/1.1 404 NOT FOUND'
+        cabecalho = 'HTTP/1.1 404 Not Found\n\n'
         body = 'FILE NOT FOUND 404'
-        print('Enviado :\n',cabecalho, body.encode('utf-8'),)
-        conn.send(body.encode('utf-8'))
+        response = cabecalho + body + '\n\n'
+        print('Enviado ',repr(response))
+        conn.send(response.encode('utf-8'))        
 
 def method_POST(source, content):
     try:
@@ -26,22 +28,6 @@ def method_POST(source, content):
     except:
         cabecalho = 'HTTP/1.1 400 ERROR'
         conn.send(cabecalho.encode('utf-8'))
-
-def method_GET(arquivo):   #Método GET
-    try:
-        cabecalho = 'HTTP/1.1 200 OK\nContent-Type: text/html\n'
-        body = open(arquivo).read()                    #Tentando abrir arquivo e tentar enviar por meio do socket como string
-        response = cabecalho + body
-        print('Enviado: ',repr(response))
-        conn.send(response.encode('utf-8'))                #Codificando uma string para bytes
-        
-    except:
-        response = 'HTTP/1.1 404 File Not Found'
-        print('Enviado ',repr(response))
-        conn.send(response.encode('utf-8'))
-
-def method_POST(arquivo):    #Método POST
-    print('Nada ainda')
 
 
 while True:
@@ -66,25 +52,20 @@ while True:
                     conection = array[2]
                     body = array[1]
 
-                    if method == 'GET':
-                        method_GET(source)
-                    
-                    if method == 'POST':
-                        method_POST(source, body)
-                        if conection == 'HTTP/1.1':
+                    if conection == 'HTTP/1.1':
                         if method == 'GET':
                             method_GET(source)
                         
                         elif method == 'POST':
-                            method_POST(source)
+                            method_POST(source,body)
                         
                         else:
-                            response = 'Método errado'
+                            response = 'HTTP/1.1 400 Bad Request\n\n'
                             print('Enviado: ',repr(response))
                             conn.send(response.encode('utf-8'))
 
                     else:
-                        response = 'Servidor não suporta HTTP/1.0'
+                        response = 'HTTP/1.1 505 HTTP Version Not Supported\n\n'
                         print('Enviado: ',repr(response))
                         conn.send(response.encode('utf-8'))
 
