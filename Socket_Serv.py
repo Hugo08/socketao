@@ -3,8 +3,6 @@ import socket
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost) Só comunica com o próprio host
 PORT = 65432        # Port to listen on (non-privileged ports are > 1023)
 
-<<<<<<< HEAD
-
 def method_GET(arquivo):
     try:
         cabecalho = 'HTTP/1.1 200 OK\n'
@@ -28,8 +26,7 @@ def method_POST(source, content):
     except:
         cabecalho = 'HTTP/1.1 400 ERROR'
         conn.send(cabecalho.encode('utf-8'))
-    
-=======
+
 def method_GET(arquivo):   #Método GET
     try:
         cabecalho = 'HTTP/1.1 200 OK\nContent-Type: text/html\n'
@@ -46,7 +43,6 @@ def method_GET(arquivo):   #Método GET
 def method_POST(arquivo):    #Método POST
     print('Nada ainda')
 
->>>>>>> 0bc08b2d97520498b039285cec4940bbff972e15
 
 while True:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
