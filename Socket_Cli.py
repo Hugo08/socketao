@@ -8,8 +8,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     while True:
         method = input('Método: ')
         source = input('Arquivo: ')
+        if method == 'POST':
+            body  = input('Conteúdo: ')
+        else:
+            body = ''
         protocol = input('Protocolo: ')
-        request = method +' '+ source +' '+ protocol
+        request = method +' '+ source +' '+ protocol + ' ' + body
         s.send(request.encode('utf-8'))                     #Enviando mensagem de requisição para servidor, codificada em bytes
 
         response = s.recv(1024)

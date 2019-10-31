@@ -50,7 +50,7 @@ while True:
                     method = array[0]
                     source = array[1]
                     conection = array[2]
-                    body = array[1]
+                    body = array[3]
 
                     if conection == 'HTTP/1.1':
                         if method == 'GET':
