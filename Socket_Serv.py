@@ -7,7 +7,7 @@ def method_GET(source):   #Método GET
     try:
         cabecalho = 'HTTP/1.1 200 OK\n\n'             #\nContent-Type: text/html; charset=iso-8859-1
         body = open(source).read()                    #Tentando abrir arquivo e tentar enviar por meio do socket como string
-        response = cabecalho + body + '\n'
+        response = cabecalho + body + '\n\n'
         print('Enviado: ',repr(response))
         conn.send(response.encode('utf-8'))                #Codificando uma string para bytes
         
@@ -23,10 +23,11 @@ def method_POST(source, content):
         arquivo = open(source, 'w')
         arquivo.write(content) 
         arquivo.close() 
-        cabecalho = 'HTTP/1.1 200 OK\n'
+        cabecalho = 'HTTP/1.1 200 OK\n\n'
+        print('Recebido ',repr(cabecalho))
         conn.send(cabecalho.encode('utf-8'))
     except:
-        cabecalho = 'HTTP/1.1 400 ERROR'
+        cabecalho = 'HTTP/1.1 400 ERROR\n\n'
         conn.send(cabecalho.encode('utf-8'))
 
 
