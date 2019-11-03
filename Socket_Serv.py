@@ -32,6 +32,7 @@ def method_POST(source, content):
 
 
 while True:
+    print('Aguardando Conexão...')
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         try:
             s.bind((HOST, PORT))
